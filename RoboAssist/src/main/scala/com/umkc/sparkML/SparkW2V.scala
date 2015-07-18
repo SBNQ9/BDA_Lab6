@@ -18,12 +18,12 @@ object SparkW2V {
     //Stopwords are broadcast to all RDD's across the cluster
     val stopWords = sc.broadcast(loadStopWords("/stopwords.txt")).value
     // map containing labels to numeric values for labeled Naive Bayes. "alt.atheism" -> 4
-    val labelToNumeric = createLabelMap("data/training/")
+    val labelToNumeric = createLabelMap("data/train/")
 
     // tokenize, stem,
-    val training = sc.wholeTextFiles("data/training/*")
+    val training = sc.wholeTextFiles("data/train/*")
       .map(rawText => createLabeledDocument(rawText, labelToNumeric, stopWords))
-    val test = sc.wholeTextFiles("data/test/*")
+    val test = sc.wholeTextFiles("data/tests/*")
       .map(rawText => createLabeledDocument(rawText,labelToNumeric, stopWords))
 
     //create features
